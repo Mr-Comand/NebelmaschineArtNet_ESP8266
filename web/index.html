@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div>
+        <div id="connectionStatus" class="bad">
+            Connecting to API...
+        </div>
+        <div id="main">
+        <div id="head">
+            <h1>TechnikFLG Fogmachine</h1>
+            <h3>Fogmachine configuration Page</h3>
+        </div>
+        <div id="content">
+        <input class="button reload" type="button" value="Reload" onclick="loadSSIDsandArtnet()">
+        <div class="config">
+            <b>WiFi Settings</b>
+            <span></span>
+            <div class="wlan" id="Wlan1">
+                <span>WLAN 1</span>
+                <form id="wlanForm1">
+                    <input type="text" class="input" name="ssid" maxlength="32" placeholder="Wlan SSID">
+                    <input type="password" class="input" name="pwd" maxlength="63" placeholder="Password">
+                    <input class="button save" type="button" value="Save" onclick="saveConfig('wlanForm1', '/wlan1')">
+                </form>
+            </div>
+            <div class="wlan" id="Wlan2">
+                <span>WLAN 2</span>
+                <form id="wlanForm2">
+                    <input type="text" class="input" name="ssid" maxlength="32" placeholder="Wlan SSID">
+                    <input type="password" class="input" name="pwd" maxlength="63" placeholder="Password">
+                    <input class="button save" type="button" value="Save" onclick="saveConfig('wlanForm2', '/wlan2')">
+                </form>
+            </div>
+            <div class="wlan" id="Wlan3">
+                <span>WLAN 3</span>
+                <form id="wlanForm3">
+                    <input type="text" class="input" name="ssid" maxlength="32" placeholder="Wlan SSID">
+                    <input type="password" class="input" name="pwd" maxlength="63" placeholder="Password">
+                    <input class="button save" type="button" value="Save" onclick="saveConfig('wlanForm3', '/wlan3')">
+                </form>
+            </div>
+            <div class="wlan" id="ap">
+                <span>Access Point</span>
+                <form id="apForm">
+                    <input type="text" class="input" name="ssid" maxlength="32" placeholder="AP SSID">
+                    <input type="password" class="input" name="pwd" maxlength="63" placeholder="Password">
+                    <input class="button save" type="button" value="Save" onclick="saveConfig('apForm', '/ap')">
+                </form>
+            </div>
+        </div>
+        <div class="artnetconfig">
+            <div id="artnet">
+                <b>Artnet settings</b>
+                <form id="artnetForm">
+                    <span>
+                        <label for="univers">Universe:</label>
+                        <input type="number" class="input" name="univers" id="univers" max="254" min="0"
+                            placeholder="Universe">
+                    </span>
+                    <span>
+                        <label for="address">Address:</label>
+                        <input type="number" class="input" name="address" id="address" max="511" min="0"
+                            placeholder="Address">
+                    </span>
+                    <span>
+                        <label for="shortname">Shortname:</label>
+                        <input type="text" class="input" name="shortname" id="shortname" maxlength="18"
+                            placeholder="Shortname">
+                    </span>
+                    <span>
+                        <label for="longname">Longname:</label>
+                        <input type="text" class="input" name="longname" id="longname" maxlength="64"
+                            placeholder="Longname">
+                    </span>
+                    <span>
+                        <label>
+                            <input type="radio" id="1ch" name="channelMode" value="0" checked>
+                            <div class="box">
+                                <span>1 Channel</span>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" id="1ch" name="channelMode" value="1">
+                            <div class="box">
+                                <span>2 Channel</span>
+                            </div>
+                        </label>
+                    </span>
+
+                    <input class="button save" type="button" value="Save" onclick="saveArtnet(this)">
+                </form>
+
+            </div>
+        </div>
+        <div id="control">
+            <div id="timer">
+                <h3>Set Timer</h3>
+                <input type="range" min="0.1" max="5" value="1" step="0.1" class="slider" id="timeSlider">
+                <p>Nebeldauer: <span id="selectedTime">1</span> Sekunden</p>
+                <button class="button" onclick="sendTimer(this)">Nebeln</button>
+                <button class="button" onclick="stopFog(this)">Stopp</button>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="main.js"></script>
+</body>
+
+</html>

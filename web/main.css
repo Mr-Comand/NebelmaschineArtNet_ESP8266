@@ -1,0 +1,167 @@
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #ffffff;
+    padding-top: 22px;
+}
+
+#main {
+    margin: 1%;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+input[type=button], input[type=submit], button {
+    background-color: #3e3e3e;
+    box-shadow: 0 0 #0003,0 0 #00000024,0 0 #0000001f;
+    border: 1px solid #5c5c5c;
+    padding-block: 1px;
+    padding-inline: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+input[type=button]:hover, input[type=submit]:hover, button {
+    background-color: #464646;
+    transition-duration: .3s;
+}
+input[type=text], input[type=password], input[type=number] {
+    border: 1px solid #ffffff4d;
+}
+input[type=text]:hover, input[type=password]:hover, input[type=number]:hover {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px white;
+    transition-duration: .3s;
+}
+input[type=radio] {
+    display: none;
+    &:checked {
+        + .box {
+          background-color: #272727;
+          box-shadow: 0 0 0 2px white; 
+        }
+    }
+}
+.box {
+    width: 100px;
+    height: 25px;
+    background-color: #3e3e3e;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    border-radius: 4px;
+    margin-right: 1em;
+    span {
+      padding: 0.5em;
+      font-size: smaller;
+      display: block;
+    }
+  }
+.box>span {
+    vertical-align: middle;
+}
+
+#control {
+    margin-top: 4em;
+}
+
+.input {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #0f0f0f;
+    color: #f0f0f0;
+
+}
+
+.save {
+    width: 15%;
+}
+
+.config {
+    margin-bottom: 4em;
+    margin-top: 4em;
+}
+
+#artnet>b {
+    display: block;
+    margin-bottom: 20px;
+}
+
+
+.button:hover :not(.sending,.failed){
+    background-color: #45a049;
+}
+@media (orientation: landscape) {
+.config, #artnetForm {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    row-gap: 20px;
+}
+}
+
+
+
+
+#connectionStatus{
+    width: 100vw;
+    background-color: yellow;
+    height: 1.5em;
+    text-align: center;
+    font-size: smaller;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2px;
+    
+        
+        position: fixed;
+        top: 0px;
+        
+}
+#connectionStatus.bad{
+    background-color: red;
+    color: rgb(109, 1, 1);
+}
+#connectionStatus.good{
+    background-color: green;
+    color: greenyellow;
+}
+
+.sending{
+    background-color: orange !important;
+}
+.failed{
+    background-color: red !important;
+}
+.success{
+    background-color: green !important;
+}
+
+.disabled{
+    input, button, .save, .box{
+        color: #2f2f2f;
+        cursor: not-allowed !important;
+    }
+    input[type="text"]:hover, input[type="password"]:hover, input[type="number"]:hover {
+        border-color: transparent;
+        box-shadow: none;
+        border: 1px solid #5c5c5c;
+        transition-duration: .3s;
+        cursor: not-allowed !important;
+      }
+}
