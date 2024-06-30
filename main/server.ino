@@ -93,10 +93,24 @@ String putArtnet(){
   writeDataToEEPROM();
   return "\"OK\"";
 }
+
 String ping(){
-    return "[\""+String(disableWebSettings)+"\",\""+String(disableWebFire)+"\"]";
+    return "[\""+String(disableWebSettings)+"\",\""+String(disableWebFire)+"\",\""+String(intervalActive)+"\","+period+","+dutyCycle+"]";
 }
   
+String interval(){
+  if(disableWebFire) return "\"disabled\"";
+  period = input("period").toInt();
+  dutyCycle = input("dutyCycle").toInt();
+  bool newIntervalActive = (input("active").toInt()==1);
+  if (intervalActive && !newIntervalActive){
+    digitalWrite(relayPin, 0);
+  }
+  intervalActive = newIntervalActive;
+  return String(intervalActive);
+}
+
+
 
 void setup_web()
 {
@@ -115,6 +129,7 @@ void setup_web()
     webServer.on("/fire",[]() { webServer.sendHeader("Access-Control-Allow-Origin", "*"); webServer.send(disableWebFire ? 423 : 200, "application/json", fire()); flash();});
     webServer.on("/putArtnet",[]() { webServer.sendHeader("Access-Control-Allow-Origin", "*"); webServer.send(disableWebSettings? 423 : 200, "application/json", putArtnet()); flash();});
     webServer.on("/ping",[]() { webServer.sendHeader("Access-Control-Allow-Origin", "*"); webServer.send(HTTP_CODE, "application/json", ping());flash();});
+    webServer.on("/interval",[]() { webServer.sendHeader("Access-Control-Allow-Origin", "*"); webServer.send(disableWebFire ? 423 : 200, "application/json", interval()); flash();});
 
     webServer.begin();
 }

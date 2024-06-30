@@ -78,6 +78,8 @@ input[type=radio] {\n\
 \n\
 #control {\n\
     margin-top: 4em;\n\
+    display: flex;\n\
+    justify-content: space-around;\n\
 }\n\
 \n\
 .input {\n\

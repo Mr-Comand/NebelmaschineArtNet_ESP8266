@@ -38,6 +38,7 @@ bool APmode = false;
 
 uint8_t dutyCycle = 255;
 uint32_t period = 1000; 
+bool intervalActive = false; //interval Active via Web.
 // Function to check if we are in the green interval
 //dutyCycle fom 0 to 255
 //period in milliseconds
@@ -193,10 +194,10 @@ void loop()
     {
       digitalWrite(relayPin, 0);
       fired = false;
-    }else if (channelMode == 3){
+    }else if (channelMode == 3 && (intervalActive || artnetTimeout > (millis() - last_artnet))){
       digitalWrite(relayPin, isOnInterval(millis(), period, dutyCycle));
     }
-    if (fireduration <= 0 && artnetTimeout < (millis() - last_artnet))
+    if (fireduration <= 0 && artnetTimeout < (millis() - last_artnet) && !intervalActive)
     {
       digitalWrite(relayPin, 0);
     }
