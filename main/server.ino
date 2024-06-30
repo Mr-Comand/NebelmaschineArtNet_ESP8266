@@ -88,7 +88,7 @@ String putArtnet(){
   Address =  input("address").toInt();
   strcpy(shortname, input("shortname").c_str());
   strcpy(longname, input("longname").c_str());
-  artnet.setArtPollReplyConfig(0x0000,0x00ff,0b11100000,0b00000111,shortname,longname,"");
+  artnet.setArtPollReplyConfig(0x00ff,0x0000,0b11100000,0b00000111,shortname,longname,"");
   channelMode = input("channelMode").toInt();
   writeDataToEEPROM();
   return "\"OK\"";
