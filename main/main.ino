@@ -1,4 +1,4 @@
-#include "config.h"
+#include "fog_config.h"
 #include <ArtnetWiFi.h>
 #include <EEPROM.h>
 
@@ -89,7 +89,7 @@ int calcPeriod(uint8_t dmxVal)
   }
   return 1800;
 }
-void callback_artnet(const uint8_t *data, const uint16_t size)
+void callback_artnet(const uint8_t *data, const uint16_t size, const ArtDmxMetadata &metadata, const ArtNetRemoteInfo &remote)
 {
   if (fireduration <= 0)
   {
@@ -178,10 +178,8 @@ void setup()
   artnet.begin(); // waiting for Art-Net in default port
   // artnet.begin(net, subnet); // optionally you can set net and subnet here
   // if Artnet packet comes to this universe(0-15), this function is called
-  artnet.shortname(shortname);
-  artnet.longname(shortname);
-  artnet.subscribe(Univers, callback_artnet); // you can also use pre-defined callbacks
-
+  artnet.setArtPollReplyConfig(0x0000,0x00ff,0b11100000,0b00000111,shortname,longname,"");
+  artnet.subscribeArtDmxUniverse(0,0,Univers, callback_artnet); // you can also use pre-defined callbacks
   setup_ota();
 }
 
@@ -215,8 +213,8 @@ void loop()
   old_time = millis();
 
   if (shouldFire
-    #if conditional
-    && fire_conditional
+    #if fire_conditional
+    && fire_condition
   #endif
   ){
     digitalWrite(relayPin, 1);

@@ -76,19 +76,19 @@ String putArtnet(){
   if (disableWebSettings) return "\"disabled\"";
   int univers_new = input("univers").toInt();
   if(univers_new != Univers){
-    artnet.unsubscribe(Univers);
+      artnet.unsubscribeArtDmxUniverse(Univers);
+
     shouldFire = 0;
 
     Univers = univers_new;
-    artnet.subscribe(Univers, callback_artnet);
+    artnet.subscribeArtDmxUniverse(Univers, callback_artnet);
   } else{
     Univers = univers_new;
   }
   Address =  input("address").toInt();
   strcpy(shortname, input("shortname").c_str());
   strcpy(longname, input("longname").c_str());
-  artnet.shortname(shortname);
-  artnet.longname(shortname);
+  artnet.setArtPollReplyConfig(0x0000,0x00ff,0b11100000,0b00000111,shortname,longname,"");
   channelMode = input("channelMode").toInt();
   writeDataToEEPROM();
   return "\"OK\"";
