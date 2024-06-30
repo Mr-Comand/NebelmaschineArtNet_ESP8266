@@ -77,7 +77,7 @@ String putArtnet(){
   int univers_new = input("univers").toInt();
   if(univers_new != Univers){
     artnet.unsubscribe(Univers);
-    digitalWrite(relayPin, 0);
+    shouldFire = 0;
 
     Univers = univers_new;
     artnet.subscribe(Univers, callback_artnet);
@@ -104,7 +104,7 @@ String interval(){
   dutyCycle = input("dutyCycle").toInt();
   bool newIntervalActive = (input("active").toInt()==1);
   if (intervalActive && !newIntervalActive){
-    digitalWrite(relayPin, 0);
+    shouldFire = 0;
   }
   intervalActive = newIntervalActive;
   return String(intervalActive);

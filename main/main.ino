@@ -1,3 +1,4 @@
+#include "config.h"
 #include <ArtnetWiFi.h>
 #include <EEPROM.h>
 
@@ -6,11 +7,6 @@ ArtnetWiFiReceiver artnet;
 #include <WiFiUdp.h>
 #include <cstdint>
 
-#define relayPin 14
-#define resetPin 2
-#define statusLED LED_BUILTIN
-#define artnetTimeout 10000
-#define otaPassword ""
 
 long old_time = 0;
 int fireduration = 0;
@@ -37,18 +33,21 @@ const int localPort = 6454;
 bool APmode = false;
 
 uint8_t dutyCycle = 255;
-uint32_t period = 1000; 
-bool intervalActive = false; //interval Active via Web.
+uint32_t period = 1000;
+
+bool shouldFire = false;
+bool intervalActive = false; // interval Active via Web.
 // Function to check if we are in the green interval
-//dutyCycle fom 0 to 255
-//period in milliseconds
+// dutyCycle fom 0 to 255
+// period in milliseconds
 bool isOnInterval(uint32_t currentTime, uint32_t period_, uint8_t dutyCycle_)
 {
-  if (period==0){
+  if (period == 0)
+  {
     return true;
   }
   uint32_t onTime = (period_ * dutyCycle_) / 255; // Calculate on-time in milliseconds
-  uint32_t offTime = period_ - onTime;           // Calculate off-time in milliseconds
+  uint32_t offTime = period_ - onTime;            // Calculate off-time in milliseconds
   // Find the current time within the period
   uint32_t timeInPeriod = currentTime % period_;
   // Check if the current time falls within the on-time interval
@@ -61,23 +60,32 @@ bool isOnInterval(uint32_t currentTime, uint32_t period_, uint8_t dutyCycle_)
     return false;
   }
 }
-int calcPeriod(uint8_t dmxVal){
-  if (dmxVal <= 50) {
+int calcPeriod(uint8_t dmxVal)
+{
+  if (dmxVal <= 50)
+  {
     return dmxVal * 0.1;
-  } else if (dmxVal <= 197) {
+  }
+  else if (dmxVal <= 197)
+  {
     // For the range 51 to 197, derive the linear relationship
     // We can observe that the output increases by 2 every step
     return (dmxVal - 50) * 2 + 5;
-  }else if (dmxVal <= 247) {
+  }
+  else if (dmxVal <= 247)
+  {
     // For the range 51 to 197, derive the linear relationship
     // We can observe that the output increases by 2 every step
     return (dmxVal - 197) * 6 + 300;
-  } if (dmxVal <= 254) {
+  }
+  if (dmxVal <= 254)
+  {
     // For the range 51 to 197, derive the linear relationship
     // We can observe that the output increases by 2 every step
     return (dmxVal - 248) * 180 + 600;
-  } else {
-    
+  }
+  else
+  {
   }
   return 1800;
 }
@@ -87,11 +95,11 @@ void callback_artnet(const uint8_t *data, const uint16_t size)
   {
     if (channelMode <= 2)
     {
-      digitalWrite(relayPin, (data[Address] > 128));
+      shouldFire = (data[Address] > 128);
     }
     else if (channelMode == 3)
     {
-      period = calcPeriod(data[Address+2])*1000; // 1 second period in milliseconds
+      period = calcPeriod(data[Address + 2]) * 1000; // 1 second period in milliseconds
       dutyCycle = data[Address];
     }
   }
@@ -126,7 +134,7 @@ void setup()
   digitalWrite(statusLED, 1);
 
   // setup Ethernet/WiFi...
-  
+
   readDataFromEEPROM();
   Serial.println("SSIDs:");
   for (int i = 0; i < 4; ++i)
@@ -185,24 +193,36 @@ void loop()
   loop_web();
 
   if (fireduration > 0)
-    {
-      fireduration = fireduration - (millis() - old_time);
-      fired = true;
-      digitalWrite(relayPin, 1);
-    }
-    else if (fired)
-    {
-      digitalWrite(relayPin, 0);
-      fired = false;
-    }else if (channelMode == 3 && (intervalActive || artnetTimeout > (millis() - last_artnet))){
-      digitalWrite(relayPin, isOnInterval(millis(), period, dutyCycle));
-    }
-    if (fireduration <= 0 && artnetTimeout < (millis() - last_artnet) && !intervalActive)
-    {
-      digitalWrite(relayPin, 0);
-    }
+  {
+    fireduration = fireduration - (millis() - old_time);
+    fired = true;
+    shouldFire = 1;
+  }
+  else if (fired)
+  {
+    shouldFire = 0;
+    fired = false;
+  }
+  else if (channelMode == 3 && (intervalActive || artnetTimeout > (millis() - last_artnet)))
+  {
+    shouldFire = isOnInterval(millis(), period, dutyCycle);
+  }
+  if (fireduration <= 0 && artnetTimeout < (millis() - last_artnet) && !intervalActive)
+  {
+    shouldFire = 0;
+  }
 
   old_time = millis();
+
+  if (shouldFire
+    #if conditional
+    && fire_conditional
+  #endif
+  ){
+    digitalWrite(relayPin, 1);
+  }else{
+    digitalWrite(relayPin, 0);
+  }
 }
 
 bool connectToWiFi(String ssid, String password)
