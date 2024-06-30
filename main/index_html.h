@@ -83,15 +83,21 @@
                     </span>\n\
                     <span>\n\
                         <label>\n\
-                            <input type=\"radio\" id=\"1ch\" name=\"channelMode\" value=\"0\" checked>\n\
+                            <input type=\"radio\" id=\"1ch\" name=\"channelMode\" value=\"1\" checked>\n\
                             <div class=\"box\">\n\
                                 <span>1 Channel</span>\n\
                             </div>\n\
                         </label>\n\
                         <label>\n\
-                            <input type=\"radio\" id=\"1ch\" name=\"channelMode\" value=\"1\">\n\
+                            <input type=\"radio\" id=\"1ch\" name=\"channelMode\" value=\"2\">\n\
                             <div class=\"box\">\n\
                                 <span>2 Channel</span>\n\
+                            </div>\n\
+                        </label>\n\
+                        <label>\n\
+                            <input type=\"radio\" id=\"1ch\" name=\"channelMode\" value=\"3\">\n\
+                            <div class=\"box\">\n\
+                                <span>3 Channel</span>\n\
                             </div>\n\
                         </label>\n\
                     </span>\n\

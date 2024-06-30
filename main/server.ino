@@ -89,7 +89,7 @@ String putArtnet(){
   strcpy(longname, input("longname").c_str());
   artnet.shortname(shortname);
   artnet.longname(shortname);
-  channelMode = input("channelMode").toInt() != 0;
+  channelMode = input("channelMode").toInt();
   writeDataToEEPROM();
   return "\"OK\"";
 }

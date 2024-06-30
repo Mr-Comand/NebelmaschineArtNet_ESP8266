@@ -10,7 +10,7 @@ void writeDataToEEPROM() {
   position += 16;
   EEPROM.put(position, Univers);  // 8 bit
   position += 8;
-  EEPROM.put(position, dualChenelMode);  // 8 bit
+  EEPROM.put(position, channelMode);  // 8 bit
   position += 8;
   EEPROM.put(position, shortname);  //
   position += sizeof(shortname);
@@ -44,7 +44,7 @@ void readDataFromEEPROM() {
   position += 16;
   EEPROM.get(position, Univers);  // 8 bit
   position += 8;
-  EEPROM.get(position, dualChenelMode);  // 8 bit
+  EEPROM.get(position, channelMode);  // 8 bit
   position += 8;
   EEPROM.get(position, shortname);
   position += sizeof(shortname);
