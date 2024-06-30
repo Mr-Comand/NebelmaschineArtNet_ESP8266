@@ -178,7 +178,7 @@ void setup()
   artnet.begin(); // waiting for Art-Net in default port
   // artnet.begin(net, subnet); // optionally you can set net and subnet here
   // if Artnet packet comes to this universe(0-15), this function is called
-  artnet.setArtPollReplyConfig(0x0000,0x00ff,0b11100000,0b00000111,shortname,longname,"");
+  artnet.setArtPollReplyConfig(0x00ff,0x0000,0b11100000,0b00000111,shortname,longname,"");
   artnet.subscribeArtDmxUniverse(0,0,Univers, callback_artnet); // you can also use pre-defined callbacks
   setup_ota();
 }
