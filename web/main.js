@@ -273,7 +273,7 @@ function loadSSIDsandArtnet() {
       var data = JSON.parse(xhr2.responseText);
 
       document.getElementsByName("address")[0].value = data[0];
-      document.getElementsByName("univers")[0].value = data[1];
+      document.getElementsByName("universe")[0].value = data[1];
       document.getElementsByName("shortname")[0].value = data[2];
       document.getElementsByName("longname")[0].value = data[3];
       document.title = "ESP-Nebel "+data[3];

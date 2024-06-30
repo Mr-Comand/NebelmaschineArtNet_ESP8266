@@ -16,8 +16,8 @@
         </div>\n\
         <div id=\"main\">\n\
             <div id=\"head\">\n\
-                <h1>TechnikFLG Fogmachine</h1>\n\
-                <h3>Fogmachine configuration Page</h3>\n\
+                <h1>TechnikFLG Fog machine</h1>\n\
+                <h3>Fog machine configuration Page</h3>\n\
             </div>\n\
             <div id=\"content\">\n\
                 <input class=\"button reload\" type=\"button\" value=\"Reload\" onclick=\"loadSSIDsandArtnet()\">\n\
@@ -119,13 +119,13 @@
                         <button class=\"button\" onclick=\"stopFog(this)\">Stopp</button>\n\
                     </div>\n\
                     <div id=\"interval\">\n\
-                        <h3>Interval Kontrolle. Status: <span id=\"intervalStatus\">OFF</span></h3> \n\
+                        <h3>Intervall Kontrolle. Status: <span id=\"intervalStatus\">OFF</span></h3> \n\
                         <input type=\"range\" min=\"0.1\" max=\"1800\" value=\"1\" step=\"1\" class=\"slider\" id=\"periodSlider\">\n\
                         <p>Periodendauer: <span id=\"selectedPeriod\">1</span></p>\n\
                         <input type=\"range\" min=\"0.1\" max=\"100\" value=\"1\" step=\"0.1\" class=\"slider\" id=\"dutyCycleSlider\">\n\
                         <p>Nebel Anteil: <span id=\"selectedDutyCycle\">1</span> %</p>\n\
-                        <button class=\"button\" onclick=\"activateInterval(this)\">Aktivie Interval</button>\n\
-                        <button class=\"button\" onclick=\"stopFog(this)\">Stopp Interval</button>\n\
+                        <button class=\"button\" onclick=\"activateInterval(this)\">Aktivie Intervall</button>\n\
+                        <button class=\"button\" onclick=\"stopFog(this)\">Stopp Intervall</button>\n\
                     </div>\n\
                 </div>\n\
             </div>\n\

@@ -9,7 +9,7 @@ ArtnetWiFiReceiver artnet;
 
 
 long old_time = 0;
-int fireduration = 0;
+int fireDuration = 0;
 bool fired = false;
 
 bool disableWebFire = false;
@@ -21,11 +21,11 @@ char shortname[19] = "ESP-Nebel";
 char longname[65] = "Große Nebelmaschine";
 
 uint16_t Address = 0;
-uint8_t Univers = 0;
+uint8_t Universe = 0;
 
 long last_artnet = 0;
 
-unsigned long previousMillis = 0; // Variable, um die letzte Ausführungszeit zu speichern
+unsigned long previousMillis = 0; 
 
 WiFiUDP Udp;
 WiFiClient client;
@@ -74,14 +74,14 @@ int calcPeriod(uint8_t dmxVal)
   }
   else if (dmxVal <= 247)
   {
-    // For the range 51 to 197, derive the linear relationship
-    // We can observe that the output increases by 2 every step
+    // For the range 197 to 247, derive the linear relationship
+    // We can observe that the output increases by 6 every step
     return (dmxVal - 197) * 6 + 300;
   }
   if (dmxVal <= 254)
   {
-    // For the range 51 to 197, derive the linear relationship
-    // We can observe that the output increases by 2 every step
+    // For the range 247 to 254, derive the linear relationship
+    // We can observe that the output increases by 180 every step
     return (dmxVal - 248) * 180 + 600;
   }
   else
@@ -91,7 +91,7 @@ int calcPeriod(uint8_t dmxVal)
 }
 void callback_artnet(const uint8_t *data, const uint16_t size, const ArtDmxMetadata &metadata, const ArtNetRemoteInfo &remote)
 {
-  if (fireduration <= 0)
+  if (fireDuration <= 0)
   {
     if (channelMode <= 2)
     {
@@ -148,7 +148,7 @@ void setup()
     Serial.println(passwords[i]);
   }
   Serial.println("Address: " + String(Address));
-  Serial.println("Univers: " + String(Univers));
+  Serial.println("Universe: " + String(Universe));
   Serial.println("shortname: " + String(shortname));
   Serial.println("longname: " + String(longname));
 
@@ -179,7 +179,7 @@ void setup()
   // artnet.begin(net, subnet); // optionally you can set net and subnet here
   // if Artnet packet comes to this universe(0-15), this function is called
   artnet.setArtPollReplyConfig(0x00ff,0x0000,0b11100000,0b00000111,shortname,longname,"");
-  artnet.subscribeArtDmxUniverse(0,0,Univers, callback_artnet); // you can also use pre-defined callbacks
+  artnet.subscribeArtDmxUniverse(0,0,Universe, callback_artnet); 
   setup_ota();
 }
 
@@ -190,9 +190,9 @@ void loop()
   loop_ota();
   loop_web();
 
-  if (fireduration > 0)
+  if (fireDuration > 0)
   {
-    fireduration = fireduration - (millis() - old_time);
+    fireDuration = fireDuration - (millis() - old_time);
     fired = true;
     shouldFire = 1;
   }
@@ -205,7 +205,7 @@ void loop()
   {
     shouldFire = isOnInterval(millis(), period, dutyCycle);
   }
-  if (fireduration <= 0 && artnetTimeout < (millis() - last_artnet) && !intervalActive)
+  if (fireDuration <= 0 && artnetTimeout < (millis() - last_artnet) && !intervalActive)
   {
     shouldFire = 0;
   }

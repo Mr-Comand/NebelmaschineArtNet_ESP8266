@@ -64,26 +64,26 @@ String getPwd() {
 
 String fire(){
   if(disableWebFire) return "\"disabled\"";
-  fireduration = input("time").toInt();
+  fireDuration = input("time").toInt();
   fired=true;
   return "\"OK\"";
 }
 
 String getArtnet(){
-  return "[\""+String(Address)+"\",\""+String(Univers)+"\",\""+String(shortname)+"\",\""+String(longname)+"\",\""+String(channelMode)+"\"]";
+  return "[\""+String(Address)+"\",\""+String(Universe)+"\",\""+String(shortname)+"\",\""+String(longname)+"\",\""+String(channelMode)+"\"]";
 }
 String putArtnet(){
   if (disableWebSettings) return "\"disabled\"";
-  int univers_new = input("univers").toInt();
-  if(univers_new != Univers){
-      artnet.unsubscribeArtDmxUniverse(Univers);
+  int universe_new = input("universe").toInt();
+  if(universe_new != Universe){
+      artnet.unsubscribeArtDmxUniverse(Universe);
 
     shouldFire = 0;
 
-    Univers = univers_new;
-    artnet.subscribeArtDmxUniverse(Univers, callback_artnet);
+    Universe = universe_new;
+    artnet.subscribeArtDmxUniverse(Universe, callback_artnet);
   } else{
-    Univers = univers_new;
+    Universe = universe_new;
   }
   Address =  input("address").toInt();
   strcpy(shortname, input("shortname").c_str());

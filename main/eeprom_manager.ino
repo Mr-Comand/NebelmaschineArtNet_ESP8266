@@ -8,7 +8,7 @@ void writeDataToEEPROM() {
   // Writes ArtNet-Data to EEPROM
   EEPROM.put(position, Address);  // 16 bit
   position += 16;
-  EEPROM.put(position, Univers);  // 8 bit
+  EEPROM.put(position, Universe);  // 8 bit
   position += 8;
   EEPROM.put(position, channelMode);  // 8 bit
   position += 8;
@@ -42,7 +42,7 @@ void readDataFromEEPROM() {
   // Read ArtNet-Data from EEPROM.
   EEPROM.get(position, Address);  // 16 bit
   position += 16;
-  EEPROM.get(position, Univers);  // 8 bit
+  EEPROM.get(position, Universe);  // 8 bit
   position += 8;
   EEPROM.get(position, channelMode);  // 8 bit
   position += 8;
