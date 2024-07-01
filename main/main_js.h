@@ -405,7 +405,7 @@ window.onload = function () {\n\
 setInterval(function () {\n\
   checkConnection();\n\
 }, 10000);\n\
-const url = \"http://192.168.178.75\";\n\
+const url = \"\";\n\
 document.addEventListener(\"keydown\", function (event) {\n\
   if (event.key === \"F5\") {\n\
     console.log(\"F5 key pressed\");\n\
