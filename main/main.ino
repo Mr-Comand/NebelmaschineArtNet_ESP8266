@@ -60,35 +60,6 @@ bool isOnInterval(uint32_t currentTime, uint32_t period_, uint8_t dutyCycle_)
     return false;
   }
 }
-int calcPeriod(uint8_t dmxVal)
-{
-  if (dmxVal <= 50)
-  {
-    return dmxVal * 0.1;
-  }
-  else if (dmxVal <= 197)
-  {
-    // For the range 51 to 197, derive the linear relationship
-    // We can observe that the output increases by 2 every step
-    return (dmxVal - 50) * 2 + 5;
-  }
-  else if (dmxVal <= 247)
-  {
-    // For the range 197 to 247, derive the linear relationship
-    // We can observe that the output increases by 6 every step
-    return (dmxVal - 197) * 6 + 300;
-  }
-  if (dmxVal <= 254)
-  {
-    // For the range 247 to 254, derive the linear relationship
-    // We can observe that the output increases by 180 every step
-    return (dmxVal - 248) * 180 + 600;
-  }
-  else
-  {
-  }
-  return 1800;
-}
 void callback_artnet(const uint8_t *data, const uint16_t size, const ArtDmxMetadata &metadata, const ArtNetRemoteInfo &remote)
 {
   if (fireDuration <= 0)
@@ -99,7 +70,7 @@ void callback_artnet(const uint8_t *data, const uint16_t size, const ArtDmxMetad
     }
     else if (channelMode == 3)
     {
-      period = calcPeriod(data[Address + 2]) * 1000; // 1 second period in milliseconds
+      period = data[Address + 2] * 500; // 1 second period in milliseconds
       dutyCycle = data[Address];
     }
   }
