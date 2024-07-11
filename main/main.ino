@@ -7,6 +7,19 @@ ArtnetWiFiReceiver artnet;
 #include <WiFiUdp.h>
 #include <cstdint>
 
+#define SENSOR_TYPE_I2C 1
+#define SENSOR_TYPE_ONEWIRE 2
+#if TEMP_SENSOR_TYPE == SENSOR_TYPE_I2C
+#include <Wire.h> // Example for I2C sensors
+// Include other necessary libraries for I2C
+#elif TEMP_SENSOR_TYPE == SENSOR_TYPE_ONEWIRE
+#include <OneWire.h>
+#include <DallasTemperature.h>
+OneWire oneWire(TEMP_SENSOR_PIN); // Pin for OneWire data
+DallasTemperature sensors(&oneWire);
+#else
+#error "Unsupported sensor type. Please define a supported sensor type."
+#endif
 
 long old_time = 0;
 int fireDuration = 0;
@@ -25,7 +38,7 @@ uint8_t Universe = 0;
 
 long last_artnet = 0;
 
-unsigned long previousMillis = 0; 
+unsigned long previousMillis = 0;
 
 WiFiUDP Udp;
 WiFiClient client;
@@ -145,12 +158,12 @@ void setup()
   {
     setup_web();
   }
-  delay(500);
+  delay(5000);
   artnet.begin(); // waiting for Art-Net in default port
   // artnet.begin(net, subnet); // optionally you can set net and subnet here
   // if Artnet packet comes to this universe(0-15), this function is called
-  artnet.setArtPollReplyConfig(0x00ff,0x0000,0b11100000,0b00000111,shortname,longname,"");
-  artnet.subscribeArtDmxUniverse(0,0,Universe, callback_artnet); 
+  artnet.setArtPollReplyConfig(0x00ff, 0x0000, 0b11100000, 0b00000111, shortname, longname, "");
+  artnet.subscribeArtDmxUniverse(Universe, callback_artnet);
   setup_ota();
 }
 
@@ -182,14 +195,31 @@ void loop()
   }
 
   old_time = millis();
+#if TEMP_SENSOR_TYPE == SENSOR_TYPE_I2C
+  // Read temperature from I2C sensors
+  float temperature = 0.0; // Replace with actual I2C sensor reading code
+  // For example:
+  // temperature = readI2CTemperatureSensor();
+#elif TEMP_SENSOR_TYPE == SENSOR_TYPE_ONEWIRE
+  // Request temperature readings from all OneWire sensors
+  sensors.requestTemperatures();
 
+  // Get temperature from the first OneWire sensor
+  float temperature = sensors.getTempCByIndex(0);
+#endif
   if (shouldFire
-    #if fire_conditional
-    && fire_condition
-  #endif
-  ){
+#if fire_conditional
+      && fire_condition
+#endif
+#if TEMP_SENSOR_TYPE != 0
+      && temperature > MIN_TEMP
+#endif
+  )
+  {
     digitalWrite(relayPin, 1);
-  }else{
+  }
+  else
+  {
     digitalWrite(relayPin, 0);
   }
 }

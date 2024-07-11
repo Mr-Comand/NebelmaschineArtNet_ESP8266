@@ -151,6 +151,9 @@ function updatePeriodSlider(slider) {
 document.getElementById("periodSlider").addEventListener("input", function () {
   disply_val = updatePeriodSlider(document.getElementById("periodSlider"))
   document.getElementById("selectedPeriod").innerText = disply_val;
+  var selectedTime = document.getElementById("dutyCycleSlider").value;
+  disply_val = updatePeriodSlider({value: Math.ceil(document.getElementById("periodSlider").value*selectedTime/10)/10, step:0})
+  document.getElementById("selectedDutyCycle").innerText = disply_val +", "+selectedTime;
   if (channelMode!=3) return;
   var period = Math.ceil(document.getElementById("periodSlider").value *1000);
   var dutyCycle = Math.ceil(document.getElementById("dutyCycleSlider").value*2.55);
@@ -166,7 +169,8 @@ document.getElementById("periodSlider").addEventListener("input", function () {
 
 document.getElementById("dutyCycleSlider").addEventListener("input", function () {
   var selectedTime = document.getElementById("dutyCycleSlider").value;
-  document.getElementById("selectedDutyCycle").innerText = selectedTime;
+  disply_val = updatePeriodSlider({value: Math.ceil(document.getElementById("periodSlider").value*selectedTime/10)/10, step:0})
+  document.getElementById("selectedDutyCycle").innerText = disply_val +", "+selectedTime;
   if (channelMode!=3) return;
   var period = Math.ceil(document.getElementById("periodSlider").value *1000);
   var dutyCycle = Math.ceil(document.getElementById("dutyCycleSlider").value*2.55);
@@ -364,8 +368,9 @@ function checkConnection() {
         document.getElementById("periodSlider").value =  Math.ceil(data[3]/1000);
         document.getElementById("dutyCycleSlider").value =  Math.ceil(data[4]/2.55); 
         disply_val = updatePeriodSlider(document.getElementById("periodSlider"))
+        disply_val = updatePeriodSlider({value: Math.ceil(document.getElementById("periodSlider").value*selectedTime/10)/10, step:0})
         document.getElementById("selectedPeriod").innerText = disply_val;
-        document.getElementById("selectedDutyCycle").innerText = Math.ceil(data[4]/2.55); 
+        document.getElementById("selectedDutyCycle").innerText = disply_val; 
         updateIntervalStatus(data[2]=="1")
         if (channelMode==3){
           var intervalInputs = document.querySelectorAll("#interval button, #interval input");

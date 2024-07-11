@@ -4,4 +4,7 @@
 #define artnetTimeout 10000
 #define otaPassword ""
 #define fire_conditional false
-#define fire_condition false //Add the condition when it should be able to fire
+#define fire_condition true //Add the condition when it should be able to fire
+#define TEMP_SENSOR_TYPE SENSOR_TYPE_ONEWIRE // 0 to disable
+#define TEMP_SENSOR_PIN 2
+#define MIN_TEMP 60.0

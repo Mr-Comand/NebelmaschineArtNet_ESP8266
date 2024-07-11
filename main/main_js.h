@@ -129,7 +129,7 @@ function activateInterval(button) {\n\
   xhr.send(formData);\n\
 }\n\
 function updatePeriodSlider(slider) {\n\
-  const selectedPeriod = slider.value;\n\
+  const selectedPeriod = slider.value || value;\n\
 \n\
   let result;\n\
   if (selectedPeriod < 60) {\n\
@@ -155,6 +155,9 @@ function updatePeriodSlider(slider) {\n\
 document.getElementById(\"periodSlider\").addEventListener(\"input\", function () {\n\
   disply_val = updatePeriodSlider(document.getElementById(\"periodSlider\"))\n\
   document.getElementById(\"selectedPeriod\").innerText = disply_val;\n\
+  var selectedTime = document.getElementById(\"dutyCycleSlider\").value;\n\
+  disply_val = updatePeriodSlider({value: Math.ceil(document.getElementById(\"periodSlider\").value*selectedTime/10)/10, step:0})\n\
+  document.getElementById(\"selectedDutyCycle\").innerText = disply_val +\", \"+selectedTime;\n\
   if (channelMode!=3) return;\n\
   var period = Math.ceil(document.getElementById(\"periodSlider\").value *1000);\n\
   var dutyCycle = Math.ceil(document.getElementById(\"dutyCycleSlider\").value*2.55);\n\
@@ -170,7 +173,8 @@ document.getElementById(\"periodSlider\").addEventListener(\"input\", function (
 \n\
 document.getElementById(\"dutyCycleSlider\").addEventListener(\"input\", function () {\n\
   var selectedTime = document.getElementById(\"dutyCycleSlider\").value;\n\
-  document.getElementById(\"selectedDutyCycle\").innerText = selectedTime;\n\
+  disply_val = updatePeriodSlider({value: Math.ceil(document.getElementById(\"periodSlider\").value*selectedTime/10)/10, step:0})\n\
+  document.getElementById(\"selectedDutyCycle\").innerText = disply_val +\", \"+selectedTime;\n\
   if (channelMode!=3) return;\n\
   var period = Math.ceil(document.getElementById(\"periodSlider\").value *1000);\n\
   var dutyCycle = Math.ceil(document.getElementById(\"dutyCycleSlider\").value*2.55);\n\
@@ -368,8 +372,9 @@ function checkConnection() {\n\
         document.getElementById(\"periodSlider\").value =  Math.ceil(data[3]/1000);\n\
         document.getElementById(\"dutyCycleSlider\").value =  Math.ceil(data[4]/2.55); \n\
         disply_val = updatePeriodSlider(document.getElementById(\"periodSlider\"))\n\
+        disply_val = updatePeriodSlider({value: Math.ceil(document.getElementById(\"periodSlider\").value*selectedTime/10)/10, step:0})\n\
         document.getElementById(\"selectedPeriod\").innerText = disply_val;\n\
-        document.getElementById(\"selectedDutyCycle\").innerText = Math.ceil(data[4]/2.55); \n\
+        document.getElementById(\"selectedDutyCycle\").innerText = disply_val; \n\
         updateIntervalStatus(data[2]==\"1\")\n\
         if (channelMode==3){\n\
           var intervalInputs = document.querySelectorAll(\"#interval button, #interval input\");\n\
